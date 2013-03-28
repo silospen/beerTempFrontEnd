@@ -44,10 +44,6 @@
 
         $.plot("#graph", plottableData, {
             xaxis: { mode: "time", timeformat: "%m/%d %H:%M" },
-            yaxes: [
-                { position: 'left' },
-                { position: 'right', minTickSize: 1, max: 1 }
-            ],
             grid: {
                 markings: startAndEndForGrid(elementDataSeries)
             }
