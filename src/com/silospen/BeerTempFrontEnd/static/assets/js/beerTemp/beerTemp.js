@@ -2,13 +2,12 @@
 
     function startAndEndForGrid(elementDataSeries) {
         var markings = [];
-        var currentStartTime;
+        var currentStartTime = undef;
         for (var j = 0; j < elementDataSeries['data'].length; j++) {
             if (elementDataSeries['data'][j][1] && j != elementDataSeries['data'].length - 1) {
                 if (!currentStartTime)currentStartTime = elementDataSeries['data'][j][0];
             } else {
                 if (currentStartTime) {
-                    //noinspection JSUnusedAssignment
                     markings.push({
                         color: "#fee",
                         xaxis: {
