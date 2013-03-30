@@ -3,16 +3,16 @@
     function startAndEndForGrid(elementDataSeries) {
         var markings = [];
         var currentStartTime = undef;
-        for (var j = 0; j < elementDataSeries['data'].length; j++) {
-            if (elementDataSeries['data'][j][1] && j != elementDataSeries['data'].length - 1) {
-                if (!currentStartTime)currentStartTime = elementDataSeries['data'][j][0];
+        for (var j = 0; j < elementDataSeries.length; j++) {
+            if (elementDataSeries[j][1] && j != elementDataSeries.length - 1) {
+                if (!currentStartTime)currentStartTime = elementDataSeries[j][0];
             } else {
                 if (currentStartTime) {
                     markings.push({
                         color: "#fee",
                         xaxis: {
                             from: currentStartTime,
-                            to: elementDataSeries['data'][j][0]
+                            to: elementDataSeries[j][0]
                         }
                     });
                     currentStartTime = undef;
@@ -24,14 +24,14 @@
 
     function populateGraph(temperatureEvents) {
         var tempDataSeries = {};
-        var elementDataSeries = {'yaxis': 2, 'label': 'Heater', 'data': []};
+        var elementData = [];
         var firstSensor;
         for (var i = 0; i < temperatureEvents.length; i++) {
             var sensorId = temperatureEvents[i]['sensorId'];
             if (firstSensor === undef) firstSensor = sensorId;
             if (tempDataSeries[sensorId] === undef) tempDataSeries[sensorId] = {'label': sensorId, 'data': []};
             tempDataSeries[sensorId]['data'].push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['temp']]);
-            if (sensorId == firstSensor) elementDataSeries['data'].push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['active']]);
+            if (sensorId == firstSensor) elementData.push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['active']]);
         }
 
         var plottableData = [];
@@ -44,7 +44,7 @@
         $.plot("#graph", plottableData, {
             xaxis: { mode: "time", timeformat: "%m/%d %H:%M" },
             grid: {
-                markings: startAndEndForGrid(elementDataSeries)
+                markings: startAndEndForGrid(elementData)
             }
         });
     }
