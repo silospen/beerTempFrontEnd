@@ -72,6 +72,13 @@
     <hr>
     {% block content %}
     <div class="jumbotron">
+
+        <form id="lookbackForm">
+            <label for="lookback">Days to show</label>
+            <input type="text" id="lookback" value="1">
+            <input type="submit"/>
+
+        </form>
         <div id="graph" style="height:450px; width:1024px;"></div>
     </div>
     {% endblock %}
