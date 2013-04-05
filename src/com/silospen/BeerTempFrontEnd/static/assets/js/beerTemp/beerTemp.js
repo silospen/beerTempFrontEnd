@@ -34,7 +34,7 @@
             var sensorId = temperatureEvents[i]['sensorId'];
             if (firstSensor === undef) firstSensor = sensorId;
             if (tempDataSeries[sensorId] === undef) tempDataSeries[sensorId] = {'label': sensorId, 'data': []};
-            tempDataSeries[sensorId]['data'].push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['temp']]);
+            if(temperatureEvents[i]['temp'] != -0.062) tempDataSeries[sensorId]['data'].push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['temp']]);
             if (sensorId == firstSensor) elementData.push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['active']]);
         }
 
