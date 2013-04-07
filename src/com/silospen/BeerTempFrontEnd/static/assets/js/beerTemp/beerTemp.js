@@ -37,7 +37,7 @@
             var sensorId = jsonTemperatureEvent['sensorId'];
             if (firstSensor === undef) firstSensor = sensorId;
             if (tempDataSeries[sensorId] === undef) tempDataSeries[sensorId] = {'label': sensorId, 'data': []};
-            if (jsonTemperatureEvent['temp'] != -0.062) tempDataSeries[sensorId]['data'].push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['temp']]);
+            tempDataSeries[sensorId]['data'].push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['temp']]);
             if (sensorId == firstSensor) elementData.push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['active']]);
         }
 
@@ -72,19 +72,12 @@
         }, 20000);
     }
 
-
     function processForm(e) {
         if (e.preventDefault) e.preventDefault();
         getGraphDataAndPlot();
     }
 
-    var form = document.getElementById('lookbackForm');
-    if (form.attachEvent) {
-        form.attachEvent("submit", processForm);
-    } else {
-        form.addEventListener("submit", processForm);
-    }
-
+    $('#lookbackForm').submit(processForm);
     getGraphDataAndPlot();
 
 })(jQuery);
