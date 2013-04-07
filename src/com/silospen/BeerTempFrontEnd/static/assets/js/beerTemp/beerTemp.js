@@ -51,8 +51,11 @@
         $.plot("#graph", plottableData, {
             xaxis: { mode: "time", timeformat: "%m/%d %H:%M" },
             grid: {
-                markings: startAndEndForGrid(elementData)
-            }
+                markings: startAndEndForGrid(elementData),
+                hoverable: true
+            },
+            legend: {show: false},
+            tooltip: true
         });
     }
 
