@@ -23,19 +23,22 @@
         return markings;
     }
 
-    function populateGraph(temperatureEvents) {
+    function populateGraph(temperatureEventsString) {
+        var temperatureEventsSplit = temperatureEventsString.split('\n');
         var tempDataSeries = {};
         var elementData = [];
         var firstSensor;
-        var currentTime = Date.now()/1000;
+        var currentTime = Date.now() / 1000;
         var hoursToLookback = $('#lookback').val() * 24 * 3600;
-        for (var i = 0; i < temperatureEvents.length; i++) {
-            if (temperatureEvents[i]['time'] < currentTime - hoursToLookback) continue;
-            var sensorId = temperatureEvents[i]['sensorId'];
+        for (var i = 0; i < temperatureEventsSplit.length; i++) {
+            if (temperatureEventsSplit[i] === "") continue;
+            var jsonTemperatureEvent = JSON.parse(temperatureEventsSplit[i]);
+            if (jsonTemperatureEvent['time'] < currentTime - hoursToLookback) continue;
+            var sensorId = jsonTemperatureEvent['sensorId'];
             if (firstSensor === undef) firstSensor = sensorId;
             if (tempDataSeries[sensorId] === undef) tempDataSeries[sensorId] = {'label': sensorId, 'data': []};
-            if(temperatureEvents[i]['temp'] != -0.062) tempDataSeries[sensorId]['data'].push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['temp']]);
-            if (sensorId == firstSensor) elementData.push([temperatureEvents[i]['time'] * 1000, temperatureEvents[i]['active']]);
+            if (jsonTemperatureEvent['temp'] != -0.062) tempDataSeries[sensorId]['data'].push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['temp']]);
+            if (sensorId == firstSensor) elementData.push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['active']]);
         }
 
         var plottableData = [];
@@ -55,10 +58,10 @@
 
     function getGraphDataAndPlot() {
         $.ajax({
-            url: '/beerTemp',
+            url: '/log.json',
             cache: false,
             type: 'GET',
-            dataType: 'json',
+            dataType: 'text',
             success: populateGraph
         });
         setTimeout(function () {
