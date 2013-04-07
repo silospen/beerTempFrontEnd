@@ -27,21 +27,22 @@
         var temperatureEventsSplit = temperatureEventsString.split('\n');
         var tempDataSeries = {};
         var elementData = [];
+        var plottableData = [];
         var firstSensor;
+        var sensorId;
         var currentTime = Date.now() / 1000;
         var hoursToLookback = $('#lookback').val() * 24 * 3600;
         for (var i = 0; i < temperatureEventsSplit.length; i++) {
             if (temperatureEventsSplit[i] === "") continue;
             var jsonTemperatureEvent = JSON.parse(temperatureEventsSplit[i]);
             if (jsonTemperatureEvent['time'] < currentTime - hoursToLookback) continue;
-            var sensorId = jsonTemperatureEvent['sensorId'];
+            sensorId = jsonTemperatureEvent['sensorId'];
             if (firstSensor === undef) firstSensor = sensorId;
             if (tempDataSeries[sensorId] === undef) tempDataSeries[sensorId] = {'label': sensorId, 'data': []};
             tempDataSeries[sensorId]['data'].push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['temp']]);
             if (sensorId == firstSensor) elementData.push([jsonTemperatureEvent['time'] * 1000, jsonTemperatureEvent['active']]);
         }
 
-        var plottableData = [];
         for (var series in tempDataSeries) {
             if (tempDataSeries.hasOwnProperty(series)) {
                 plottableData.push(tempDataSeries[series]);
